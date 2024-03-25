@@ -1,0 +1,39 @@
+services:
+  postgres:
+    container_name: customer-db # TODO: Change name!
+    image: postgres:16.2-alpine3.19
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: customer # TODO: Change name!
+      PGDATA: /data/postgres
+    volumes:
+      - customer_postgres:/data/postgres # TODO: Change name!
+    ports:
+      - "5432:5432"
+    networks:
+      - customer_service # TODO: Change name!
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: customer-pgadmin # TODO: Change name!
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - customer_pgadmin:/vars/lib/pgadmin # TODO: Change name!
+    ports:
+      - "5050:80"
+    networks:
+      - customer_service # TODO: Change name!
+    restart: unless-stopped
+
+networks:
+  customer_service: # TODO: Change name!
+    driver: bridge
+
+volumes:
+  customer_postgres: # TODO: Change name!
+  customer_pgadmin: # TODO: Change name!
