@@ -1,6 +1,6 @@
 services:
   postgres:
-    container_name: wisercat-demo-db
+    container_name: filter-db
     image: postgres:16.2-alpine3.19
     environment:
       POSTGRES_USER: admin
@@ -15,20 +15,20 @@ services:
       - filter_service
     restart: unless-stopped
 
-#  pgadmin:
-#    container_name: filter-pgadmin
-#    image: dpage/pgadmin4
-#    environment:
-#      PGADMIN_DEFAULT_EMAIL: admin@gmail.com
-#      PGADMIN_DEFAULT_PASSWORD: admin
-#      PGADMIN_CONFIG_SERVER_MODE: 'False'
-#    volumes:
-#      - filter_pgadmin:/vars/lib/pgadmin
-#    ports:
-#      - "5050:80"
-#    networks:
-#      - filter_service
-#    restart: unless-stopped
+  pgadmin:
+    container_name: filter-pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - filter_pgadmin:/vars/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - filter_service
+    restart: unless-stopped
 
 networks:
   filter_service:
@@ -36,4 +36,4 @@ networks:
 
 volumes:
   filter_postgres:
-#  filter_pgadmin:
+  filter_pgadmin:

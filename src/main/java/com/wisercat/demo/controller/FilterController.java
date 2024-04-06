@@ -1,9 +1,11 @@
 package com.wisercat.demo.controller;
 
 import com.wisercat.demo.entity.FilterEntity;
+import com.wisercat.demo.dto.FilterDTO;
 import com.wisercat.demo.service.FilterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,30 +20,30 @@ public class FilterController {
     @GetMapping
     public ResponseEntity<List<FilterEntity>> getAllFilters() {
         var filters = filterService.getAllFilters();
-        return ResponseEntity.ok(filters);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<FilterEntity> getFilter(@PathVariable Long id) {
-        var filter = filterService.getFilter(id);
-        return ResponseEntity.ok(filter);
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(filters);
     }
 
     @PostMapping
-    public ResponseEntity<FilterEntity> createFilter(@RequestBody FilterEntity filter) {
-        System.out.println("I AM GETTING HERE!");
+    public ResponseEntity<FilterEntity> createFilter(@RequestBody FilterDTO filter) {
         var createdFilter = filterService.createFilter(filter);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdFilter);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(createdFilter);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<FilterEntity> updateFilter(@PathVariable Long id,
-                                                     @RequestBody FilterEntity filter) {
-        var updatedFilter = filterService.updateFilter(id, filter);
-        if (updatedFilter != null) {
-            return ResponseEntity.ok(updatedFilter);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PutMapping
+    public ResponseEntity<FilterEntity> updateFilter(@RequestBody FilterEntity filter) {
+        var updatedFilter = filterService.updateFilter(filter);
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(updatedFilter);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteFilter(@PathVariable Long id) {
+        filterService.deleteFilter(id);
+        return ResponseEntity.noContent().build();
     }
 }

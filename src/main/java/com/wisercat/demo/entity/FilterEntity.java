@@ -1,16 +1,16 @@
 package com.wisercat.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
-@Table(name="filter")
+@Builder
+@Table(name = "filter")
 @NoArgsConstructor
 @AllArgsConstructor
 public class FilterEntity {
@@ -30,8 +30,8 @@ public class FilterEntity {
     @OneToMany(
             mappedBy = "filter",
             cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private List<CriteriaEntity> criterias = new ArrayList<>();
+            fetch = FetchType.LAZY)
+    private List<CriterionEntity> criteria = new ArrayList<>();
     @Column(nullable = false)
     private int selection;
 }

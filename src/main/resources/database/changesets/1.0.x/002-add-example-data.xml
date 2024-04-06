@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+
+    <changeSet id="002-add-example-data" author="alrudo">
+
+        <preConditions>
+            <tableExists tableName="criterion"/>
+            <tableExists tableName="filter"/>
+
+            <foreignKeyConstraintExists foreignKeyName="fk_filter_criterion"/>
+        </preConditions>
+
+       <insert tableName="filter">
+           <column name="id" valueNumeric="1"/>
+           <column name="name" value="Example filter"/>
+           <column name="selection" valueNumeric="3"/>
+       </insert>
+
+        <insert tableName="criterion">
+            <column name="id" valueNumeric="1"/>
+            <column name="filter_id" valueNumeric="1"/>
+            <column name="type" value="amount"/>
+            <column name="param" value="="/>
+            <column name="value" value="145"/>
+        </insert>
+        <insert tableName="criterion">
+            <column name="id" valueNumeric="2"/>
+            <column name="filter_id" valueNumeric="1"/>
+            <column name="type" value="amount"/>
+            <column name="param" value="=/="/>
+            <column name="value" value="783"/>
+        </insert>
+        <insert tableName="criterion">
+            <column name="id" valueNumeric="3"/>
+            <column name="filter_id" valueNumeric="1"/>
+            <column name="type" value="title"/>
+            <column name="param" value="startsWith"/>
+            <column name="value" value="Meow"/>
+        </insert>
+        <insert tableName="criterion">
+            <column name="id" valueNumeric="4"/>
+            <column name="filter_id" valueNumeric="1"/>
+            <column name="type" value="date"/>
+            <column name="param" value="1996-02-25"/>
+            <column name="value" value="145"/>
+        </insert>
+
+        <insert tableName="filter">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="Example filter-2"/>
+            <column name="selection" valueNumeric="1"/>
+        </insert>
+
+        <insert tableName="criterion">
+            <column name="id" valueNumeric="5"/>
+            <column name="filter_id" valueNumeric="2"/>
+            <column name="type" value="title"/>
+            <column name="param" value="doesNotContain"/>
+            <column name="value" value="World!"/>
+        </insert>
+        <insert tableName="criterion">
+            <column name="id" valueNumeric="6"/>
+            <column name="filter_id" valueNumeric="2"/>
+            <column name="type" value="date"/>
+            <column name="param" value="until"/>
+            <column name="value" value="2013-12-30"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
