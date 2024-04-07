@@ -1,7 +1,9 @@
 package com.wisercat.demo.util;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public enum CriterionParam {
     MORE(">", CriterionType.AMOUNT),
@@ -21,11 +23,11 @@ public enum CriterionParam {
     ON("on", CriterionType.DATE);
 
     private final String value;
-    private final CriterionType criterionType;
+    private final CriterionType type;
 
     public static boolean valid(String value, CriterionType type) {
         for (CriterionParam param : CriterionParam.values()) {
-            if (param.value.equals(value) && param.criterionType.equals(type)) {
+            if (param.value.equals(value) && param.type.equals(type)) {
                 return true;
             }
         }

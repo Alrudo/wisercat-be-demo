@@ -1,7 +1,6 @@
 package com.wisercat.demo.service;
 
 import com.wisercat.demo.entity.CriterionEntity;
-import com.wisercat.demo.entity.FilterEntity;
 import com.wisercat.demo.exception.InvalidCriterionException;
 import com.wisercat.demo.repository.CriterionRepository;
 import com.wisercat.demo.util.CriterionParam;
@@ -23,9 +22,9 @@ public class CriterionService {
     private final CriterionRepository criterionRepository;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    public void deleteExcessiveCriteria(FilterEntity existingFilter,
+    public void deleteExcessiveCriteria(List<CriterionEntity> existingCriteria,
                                         List<CriterionEntity> newCriteria) {
-        existingFilter.getCriteria().stream()
+        existingCriteria.stream()
                 .map(CriterionEntity::getId)
                 .filter(id -> newCriteria.stream().noneMatch(criterion -> Objects.equals(criterion.getId(), id)))
                 .toList()
@@ -41,7 +40,7 @@ public class CriterionService {
             throw new InvalidCriterionException();
         }
         for (CriterionEntity criterion : criteria) {
-            var type = CriterionType.getType(criterion.getType());
+            var type = CriterionType.getValue(criterion.getType());
             if (type == null || !CriterionParam.valid(criterion.getParam(), type)) {
                 throw new InvalidCriterionException();
             }

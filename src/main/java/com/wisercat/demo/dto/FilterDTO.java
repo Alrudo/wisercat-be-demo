@@ -5,6 +5,6 @@ import java.util.List;
 public record FilterDTO(
         String name,
         Integer selection,
-        List<CriteriaDTO> criteria
+        List<CriterionDTO> criteria
 ) {
 }

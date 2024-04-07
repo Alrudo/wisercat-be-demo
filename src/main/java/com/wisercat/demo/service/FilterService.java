@@ -4,6 +4,7 @@ import com.wisercat.demo.dto.FilterDTO;
 import com.wisercat.demo.entity.CriterionEntity;
 import com.wisercat.demo.entity.FilterEntity;
 import com.wisercat.demo.exception.FilterNotFoundException;
+import com.wisercat.demo.exception.InvalidFilterException;
 import com.wisercat.demo.repository.FilterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,26 +25,28 @@ public class FilterService {
 
     public FilterEntity createFilter(FilterDTO filter) {
         var filterEntity = mapDTOToEntity(filter);
+        filterIsValid(filterEntity);
         criterionService.criteriaAreValid(filterEntity.getCriteria());
+
         return filterRepository.save(filterEntity);
     }
 
     public FilterEntity updateFilter(FilterEntity newFilter) {
+        filterIsValid(newFilter);
+        criterionService.criteriaAreValid(newFilter.getCriteria());
+
         var existingFilter = filterRepository.findById(newFilter.getId())
                 .orElseThrow(() -> new FilterNotFoundException(newFilter.getId()));
-        criterionService.deleteExcessiveCriteria(existingFilter, newFilter.getCriteria());
-        criterionService.criteriaAreValid(newFilter.getCriteria());
+        criterionService.deleteExcessiveCriteria(existingFilter.getCriteria(), newFilter.getCriteria());
 
         existingFilter.setName(newFilter.getName());
         existingFilter.setSelection(newFilter.getSelection());
         existingFilter.setCriteria(newFilter.getCriteria());
+        existingFilter.getCriteria().forEach(criterion -> criterion.setFilter(existingFilter));
         return filterRepository.save(existingFilter);
     }
 
     public void deleteFilter(Long id) {
-        if (!filterRepository.existsById(id)) {
-            throw new FilterNotFoundException(id);
-        }
         filterRepository.deleteById(id);
     }
 
@@ -64,5 +67,13 @@ public class FilterService {
                 .toList();
         filterEntity.setCriteria(criteria);
         return filterEntity;
+    }
+
+    private void filterIsValid(FilterEntity filter) {
+        boolean invalidName = filter.getName().length() == 0 || filter.getName().length() > 255;
+        boolean invalidSelection = filter.getSelection() < 1 || filter.getSelection() > filter.getCriteria().size();
+        if (invalidName || invalidSelection) {
+            throw new InvalidFilterException();
+        }
     }
 }

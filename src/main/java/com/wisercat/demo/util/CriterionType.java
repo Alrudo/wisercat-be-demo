@@ -1,15 +1,23 @@
 package com.wisercat.demo.util;
 
-public enum CriterionType {
-    AMOUNT,
-    TITLE,
-    DATE;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-    public static CriterionType getType(String value) {
-        try {
-            return CriterionType.valueOf(value.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            return null;
+@Getter
+@RequiredArgsConstructor
+public enum CriterionType {
+    AMOUNT("amount"),
+    TITLE("title"),
+    DATE("date");
+
+    private final String value;
+
+    public static CriterionType getValue(String value) {
+        for (CriterionType type: CriterionType.values()) {
+            if (type.value.equals(value)) {
+                return type;
+            }
         }
+        return null;
     }
 }
