@@ -45,8 +45,8 @@
             <column name="id" valueNumeric="4"/>
             <column name="filter_id" valueNumeric="1"/>
             <column name="type" value="date"/>
-            <column name="param" value="1996-02-25"/>
-            <column name="value" value="145"/>
+            <column name="param" value="on"/>
+            <column name="value" value="1996-02-25"/>
         </insert>
 
         <insert tableName="filter">
