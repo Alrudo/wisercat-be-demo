@@ -27,6 +27,7 @@ public class FilterEntity {
             unique = true,
             nullable = false)
     private String name;
+    @Builder.Default
     @OneToMany(
             mappedBy = "filter",
             cascade = CascadeType.ALL,

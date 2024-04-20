@@ -5,9 +5,9 @@ spring:
   application:
     name: wisercat-be-demo
   datasource:
-    url: jdbc:postgresql://localhost:5432/filter
-    username: admin
-    password: admin
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/filter}
+    username: ${DATASOURCE_USERNAME:admin}
+    password: ${DATASOURCE_PASSWORD:admin}
   jpa:
     properties:
       hibernate:
@@ -18,7 +18,7 @@ spring:
     show-sql: true
   liquibase:
     change-log: database/liquibase-changeLog.xml
-    url: jdbc:postgresql://localhost:5432/filter
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/filter}
     driver-class-name: org.postgresql.Driver
-    user: admin
-    password: admin
+    user: ${DATASOURCE_USERNAME:admin}
+    password: ${DATASOURCE_PASSWORD:admin}
